@@ -21,7 +21,7 @@ import {
  */
 /**
  * @template T
- * @typedef {T extends Array<infer E> ? E : never;} ElementOfArray 解構陣列型別
+ * @typedef {T extends Array<infer E> ? E : never} ElementOfArray 解構陣列型別
  */
 /**
  * @typedef AlertActionsType alert按鈕資料型別
