@@ -8,7 +8,8 @@
 
 > AlertProvider組件要放在ThemeProvider裡面以獲取主題樣式
 
-```import { createTheme, ThemeProvider } from "@mui/material/styles";
+```example
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { AlertProvider } from "/Alert";
 
 function App() {
@@ -27,7 +28,8 @@ function App() {
 
 使用useAlert可以獲得alert、notify函式
 
-```const {alert, notify} = useAlert();
+```example
+const {alert, notify} = useAlert();
 ```
 
 * **alert** 完整的通知設定
@@ -35,7 +37,8 @@ function App() {
 
 ### alert()
 
-```alert(title, contentText, actions);
+```example
+alert(title, contentText, actions);
 ```
 
 | 名稱 | 型別 | 描述 |
@@ -46,7 +49,8 @@ function App() {
 
 ### notify()
 
-```notify(contentText, onClick, text);
+```example
+notify(contentText, onClick, text);
 ```
 
 | 名稱 | 型別 | 預設值 | 描述 |
