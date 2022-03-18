@@ -57,7 +57,7 @@ notify(contentText, onClick, text);
 | ---- | ---- | ---- | ---- |
 | contentText | string | "" | 通知內容 |
 | onClick | function | () => void  | 按鈕行為 |
-| text | string | "" | 確定按鈕文字 |
+| text | string | "確認" | 確定按鈕文字 |
 
 ### 型別
 
