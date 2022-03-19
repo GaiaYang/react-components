@@ -5,6 +5,7 @@ import React, {
   useMemo,
   memo,
   useRef,
+  useCallback,
 } from "react";
 import {
   Button,
@@ -40,7 +41,7 @@ import {
  * @property {AlertDataType} data 通知資料
  */
 /**
- * @callback AlertReducerCallback reducer方法回傳
+ * @callback AlertDispatchCallback reducer方法回傳
  * @param {AlertDispatchType}
  */
 // NOTE alert預設設定
@@ -55,8 +56,7 @@ const defaultAlertData = {
 // ANCHOR 創建context
 const AlertContext = createContext(
   /**
-   * @function
-   * @param {AlertReducerCallback} _ alert dispatch可用項目
+   * @param {AlertDispatchType} _ alert dispatch可用項目
    */
   (_) => {}
 );
@@ -101,7 +101,7 @@ export function useAlert() {
   }
   return { alert, notify };
 }
-// ANCHOR alert的通用層
+// ANCHOR alert的provider
 const alertDataInit = [];
 export const AlertProvider = memo(function AlertProvider({ children }) {
   const [alertData, alertDataDispatch] = useReducer(
@@ -139,7 +139,7 @@ function alertDataReducer(state, action) {
 /**
  * @typedef AlertModalProps
  * @property {Array<AlertDataType>} data
- * @property {AlertReducerCallback} reducerDispatch
+ * @property {AlertDispatchCallback} reducerDispatch
  */
 /**
  * @param {AlertModalProps} param0
@@ -171,9 +171,9 @@ function AlertModal({ data = [], reducerDispatch = () => {} }) {
     },
     [data]
   );
-  function _onClose() {
+  const _onClose = useCallback(() => {
     reducerDispatch({ type: "close" });
-  }
+  }, [reducerDispatch]);
   /**
    * @param {AlertActionsType} item
    * @param {number} index
