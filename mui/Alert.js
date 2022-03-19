@@ -5,7 +5,6 @@ import React, {
   useMemo,
   memo,
   useRef,
-  useCallback,
 } from "react";
 import {
   Button,
@@ -33,12 +32,16 @@ import {
  * @typedef AlertDataType alert資料型別
  * @property {string} title 通知標題
  * @property {string} contentText 通知內容
- * @property {AlertActionsType[]} actions 按鈕
+ * @property {Array<AlertActionsType>} actions 按鈕
  */
 /**
  * @typedef AlertDispatchType alert dispatch資料型別
  * @property {'open' | 'close'} type 控制開關
  * @property {AlertDataType} data 通知資料
+ */
+/**
+ * @callback AlertReducerCallback reducer方法回傳
+ * @param {AlertDispatchType}
  */
 // NOTE alert預設設定
 /**
@@ -49,10 +52,11 @@ const defaultAlertData = {
   contentText: "",
   actions: [{ text: "確認", onClick: () => {}, variant: "contained" }],
 };
-// ANCHOR 創立context
+// ANCHOR 創建context
 const AlertContext = createContext(
   /**
-   * @param {AlertDispatchType} _ alert dispatch可用項目
+   * @function
+   * @param {AlertReducerCallback} _ alert dispatch可用項目
    */
   (_) => {}
 );
@@ -100,29 +104,6 @@ export function useAlert() {
 // ANCHOR alert的通用層
 const alertDataInit = [];
 export const AlertProvider = memo(function AlertProvider({ children }) {
-  const alertDataReducer = useCallback(
-    /**
-     * @param {AlertDataType[]} state 先前陣列資料
-     * @param {AlertDispatchType} action 陣列行為選項
-     * @returns {AlertDataType[]} 回傳新的alert陣列
-     */
-    (state, action) => {
-      switch (action.type) {
-        case "open":
-          // NOTE 將每次alert的東西推進陣列
-          return [...state, action.data];
-        case "close":
-          // NOTE 移除最後一筆資料
-          const newState = state.slice();
-          newState.pop();
-          return newState;
-        default:
-          // NOTE 未知情況改為預設值
-          return alertDataInit;
-      }
-    },
-    []
-  );
   const [alertData, alertDataDispatch] = useReducer(
     alertDataReducer,
     alertDataInit
@@ -134,11 +115,31 @@ export const AlertProvider = memo(function AlertProvider({ children }) {
     </AlertContext.Provider>
   );
 });
+// NOTE reducer方法
+/**
+ * @param {Array<AlertDataType>} state 先前陣列資料
+ * @param {AlertDispatchType} action 陣列行為選項
+ * @returns {Array<AlertDataType>} 回傳新的alert陣列
+ */
+function alertDataReducer(state, action) {
+  switch (action.type) {
+    case "open":
+      // NOTE 將每次alert的東西推進陣列
+      return [...state, action.data];
+    case "close":
+      // NOTE 移除最後一筆資料，需重新創建物件來刷新state
+      state.pop();
+      return [...state];
+    default:
+      // NOTE 未知情況改為預設值
+      return alertDataInit;
+  }
+}
 // ANCHOR 通知浮層
 /**
  * @typedef AlertModalProps
- * @property {AlertDataType[]} data
- * @property {(callback: AlertDispatchType) => void} reducerDispatch
+ * @property {Array<AlertDataType>} data
+ * @property {AlertReducerCallback} reducerDispatch
  */
 /**
  * @param {AlertModalProps} param0
@@ -188,8 +189,8 @@ function AlertModal({ data = [], reducerDispatch = () => {} }) {
         key={`action-${index}`}
         variant={variant}
         onClick={() => {
-          onClick();
           _onClose();
+          onClick();
         }}
       >
         {text}
