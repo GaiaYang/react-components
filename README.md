@@ -1,6 +1,4 @@
-# react-mui-components
-
-## MUI
+# MUI
 
 需要 MUI v5，必備依賴項為 @mui/material 其餘依照官方[安裝教學](https://mui.com/zh/getting-started/installation/).
 
@@ -32,22 +30,22 @@ function App() {
 const {alert, notify} = useAlert();
 ```
 
-- **alert** 完整的通知設定
-- **notify** 簡易的通知設定
+> - **alert** - 完整的通知設定
+> - **notify** - 簡易的通知設定
 
-### alert()
+#### alert()
 
 ```example
 alert(title, contentText, actions);
 ```
 
-| 名稱        |  型別   |   描述   |
-| ----------- | :-----: | :------: |
+| 名稱        | 型別    | 描述     |
+| ----------- | ------- | -------- |
 | title       | string  | 通知標題 |
 | contentText | string  | 通知內容 |
-| actions     | Actions |   按鈕   |
+| actions     | Actions | 按鈕     |
 
-### notify()
+#### notify()
 
 ```example
 notify(contentText, onClick, text);
@@ -67,7 +65,7 @@ notify(contentText, onClick, text);
 | ---------------- |
 | array of objects |
 
-對象屬性
+#### 對象屬性
 
 | 名稱    | 型別                            | 預設值      | 描述     |
 | ------- | ------------------------------- | ----------- | -------- |
