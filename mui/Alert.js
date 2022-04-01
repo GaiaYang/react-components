@@ -1,11 +1,11 @@
 import React, {
-  useContext,
   createContext,
-  useReducer,
-  useMemo,
   memo,
-  useRef,
   useCallback,
+  useContext,
+  useMemo,
+  useReducer,
+  useRef,
 } from "react";
 import {
   Button,
@@ -17,36 +17,36 @@ import {
 } from "@mui/material";
 // STUB 依賴型別
 /**
- * @typedef {import("@mui/material").ButtonProps} ButtonProps MUI按鈕型別
+ * @typedef {import("@mui/material").ButtonProps} ButtonProps - MUI按鈕型別
  */
 /**
  * @template T
- * @typedef {T extends Array<infer E> ? E : never} ElementOfArray 解構陣列型別
+ * @typedef {T extends Array<infer E> ? E : never} ElementOfArray - 解構陣列型別
  */
 /**
- * @typedef AlertActionsType alert按鈕資料型別
- * @property {string} text 按鈕文字
- * @property {() => void} onClick 按鈕行為
- * @property {ButtonProps['variant']} variant 按鈕樣式
+ * @typedef AlertActionsType - alert按鈕資料型別
+ * @property {string} [text="確認"] - 按鈕文字
+ * @property {() => void} [onClick=() => {}] - 按鈕行為
+ * @property {ButtonProps['variant']} [variant="contained"] - 按鈕樣式
  */
 /**
- * @typedef AlertDataType alert資料型別
- * @property {string} title 通知標題
- * @property {string} contentText 通知內容
- * @property {Array<AlertActionsType>} actions 按鈕
+ * @typedef AlertDataType - alert資料型別
+ * @property {string} [title="通知"] - 通知標題
+ * @property {string} [contentText=""] - 通知內容
+ * @property {Array<AlertActionsType>} actions - 按鈕
  */
 /**
- * @typedef AlertDispatchType alert dispatch資料型別
- * @property {'open' | 'close'} type 控制開關
- * @property {AlertDataType} data 通知資料
+ * @typedef AlertDispatchType - alert dispatch資料型別
+ * @property {'open' | 'close'} type - 控制開關
+ * @property {AlertDataType} data - 通知資料
  */
 /**
- * @callback AlertDispatchCallback reducer方法回傳
+ * @callback AlertReducerCallback - reducer方法回傳
  * @param {AlertDispatchType}
  */
 // NOTE alert預設設定
 /**
- * @type {AlertDataType} alert預設設定
+ * @type {AlertDataType} - alert預設設定
  */
 const defaultAlertData = {
   title: "通知",
@@ -56,7 +56,8 @@ const defaultAlertData = {
 // ANCHOR 創建context
 const AlertContext = createContext(
   /**
-   * @param {AlertDispatchType} _ alert dispatch可用項目
+   * @function
+   * @param {AlertReducerCallback} _ - alert dispatch可用項目
    */
   (_) => {}
 );
@@ -64,9 +65,9 @@ const AlertContext = createContext(
 export function useAlert() {
   const alertDataDispatch = useContext(AlertContext);
   /**
-   * @param {AlertDataType['title']} title 標題
-   * @param {AlertDataType['contentText']} contentText 內容
-   * @param {AlertDataType['actions']} actions 按鈕組
+   * @param {AlertDataType['title']} title - 標題
+   * @param {AlertDataType['contentText']} contentText - 內容
+   * @param {AlertDataType['actions']} actions - 按鈕組
    */
   function alert(title, contentText, actions) {
     alertDataDispatch({
@@ -79,9 +80,9 @@ export function useAlert() {
     });
   }
   /**
-   * @param {AlertDataType['contentText']} contentText 內容
-   * @param {ElementOfArray<AlertDataType['actions']>['onClick']} onClick 按鈕行為
-   * @param {string} text 按鈕文字
+   * @param {AlertDataType['contentText']} contentText - 內容
+   * @param {ElementOfArray<AlertDataType['actions']>['onClick']} onClick - 按鈕行為
+   * @param {string} [text] - 按鈕文字
    */
   function notify(contentText, onClick, text) {
     alertDataDispatch({
@@ -117,9 +118,9 @@ export const AlertProvider = memo(function AlertProvider({ children }) {
 });
 // NOTE reducer方法
 /**
- * @param {Array<AlertDataType>} state 先前陣列資料
- * @param {AlertDispatchType} action 陣列行為選項
- * @returns {Array<AlertDataType>} 回傳新的alert陣列
+ * @param {Array<AlertDataType>} state - 先前陣列資料
+ * @param {AlertDispatchType} action - 陣列行為選項
+ * @returns {Array<AlertDataType>} - 回傳新的alert陣列
  */
 function alertDataReducer(state, action) {
   switch (action.type) {
@@ -139,7 +140,7 @@ function alertDataReducer(state, action) {
 /**
  * @typedef AlertModalProps
  * @property {Array<AlertDataType>} data
- * @property {AlertDispatchCallback} reducerDispatch
+ * @property {AlertReducerCallback} reducerDispatch
  */
 /**
  * @param {AlertModalProps} param0

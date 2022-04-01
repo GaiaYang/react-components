@@ -26,20 +26,20 @@ import {
  */
 /**
  * @template ItemT
- * @typedef CombinedTableProps
- * @property {ItemT} data 表格資料
- * @property {tableItem} head 表格標頭
- * @property {(item: ElementOfArray<ItemT>, index: number) => tableItem} body 資料渲染
- * @property {(item: ElementOfArray<ItemT>, index: number) => string} keyExtractor 生成陣列key
- * @property {Omit<TableProps, 'children'>} tableProps table組件屬性
- * @property {Omit<TableContainerProps, 'children'>} tableContainerProps tableContainer組件屬性
- * @property {Omit<TableHeadProps, 'children'>} tableHeadProps tableHeadProps組件屬性
- * @property {Omit<TableBodyProps, 'children'>} tableBodyProps tableBodyProps組件屬性
+ * @typedef CombinedTableProps - 組件型別
+ * @property {ItemT} data - 表格資料
+ * @property {tableItem} head - 表格標頭
+ * @property {(item: ElementOfArray<ItemT>, index: number) => tableItem} body - 資料渲染
+ * @property {(item: ElementOfArray<ItemT>, index: number) => string} keyExtractor - 生成陣列key
+ * @property {Omit<TableProps, 'children'>} tableProps - table組件屬性
+ * @property {Omit<TableContainerProps, 'children'>} tableContainerProps - tableContainer組件屬性
+ * @property {Omit<TableHeadProps, 'children'>} tableHeadProps - tableHeadProps組件屬性
+ * @property {Omit<TableBodyProps, 'children'>} tableBodyProps - tableBodyProps組件屬性
  */
 /**
- * @template T 泛型對應到data的位置
- * @param {CombinedTableProps<T>} param0 表格屬性
- * @returns {React.ReactNode} 回傳畫面
+ * @template T - 泛型對應到data的位置
+ * @param {CombinedTableProps<T>} param0 - 表格屬性
+ * @returns {React.ReactNode} - 回傳畫面
  */
 export default function CombinedTable({
   data = [],
