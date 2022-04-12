@@ -73,7 +73,7 @@ export default function CombinedTable({
   function renderBody() {
     if (typeof body === "function") {
       return arrayDebug(data).map((item, index) => {
-        const { children, ...otherBody } = body(item);
+        const { children, ...otherBody } = body(item, index);
         const key =
           typeof keyExtractor === "function"
             ? keyExtractor(item, index)
