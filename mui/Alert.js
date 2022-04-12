@@ -21,7 +21,7 @@ import {
  */
 /**
  * @template T
- * @typedef {T extends Array<infer E> ? E : never} ElementOfArray - 解構陣列型別
+ * @typedef {import("react").Context<T>} ContextType - Context型別
  */
 /**
  * @typedef AlertActionsType - alert按鈕資料型別
@@ -54,13 +54,10 @@ const defaultAlertData = {
   actions: [{ text: "確認", onClick: () => {}, variant: "contained" }],
 };
 // ANCHOR 創建context
-const AlertContext = createContext(
-  /**
-   * @function
-   * @param {AlertReducerCallback} _ - alert dispatch可用項目
-   */
-  (_) => {}
-);
+/**
+ * @type {ContextType<AlertReducerCallback>}
+ */
+const AlertContext = createContext(() => {});
 // ANCHOR alert的hook
 export function useAlert() {
   const alertDataDispatch = useContext(AlertContext);
@@ -81,7 +78,7 @@ export function useAlert() {
   }
   /**
    * @param {AlertDataType['contentText']} contentText - 內容
-   * @param {ElementOfArray<AlertDataType['actions']>['onClick']} onClick - 按鈕行為
+   * @param {AlertActionsType['onClick']} onClick - 按鈕行為
    * @param {string} [text] - 按鈕文字
    */
   function notify(contentText, onClick, text) {

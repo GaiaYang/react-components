@@ -18,19 +18,15 @@ import {
  * @typedef {import('@mui/material').TableRowProps} TableRowProps
  */
 /**
- * @template T
- * @typedef {T extends Array<infer E> ? E : never} ElementOfArray
- */
-/**
  * @typedef {Omit<TableRowProps, 'children'> & {children: TableCellProps[]}} tableItem
  */
 /**
  * @template ItemT
  * @typedef CombinedTableProps - 組件型別
- * @property {ItemT} data - 表格資料
+ * @property {Array<ItemT>} data - 表格資料
  * @property {tableItem} head - 表格標頭
- * @property {(item: ElementOfArray<ItemT>, index: number) => tableItem} body - 資料渲染
- * @property {(item: ElementOfArray<ItemT>, index: number) => string} keyExtractor - 生成陣列key
+ * @property {(item: ItemT, index: number) => tableItem} body - 資料渲染
+ * @property {(item: ItemT, index: number) => string} keyExtractor - 生成陣列key
  * @property {Omit<TableProps, 'children'>} tableProps - table組件屬性
  * @property {Omit<TableContainerProps, 'children'>} tableContainerProps - tableContainer組件屬性
  * @property {Omit<TableHeadProps, 'children'>} tableHeadProps - tableHeadProps組件屬性
