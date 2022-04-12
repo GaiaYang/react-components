@@ -47,10 +47,6 @@ export default function CombinedTable({
   tableHeadProps,
   tableBodyProps,
 }) {
-  // NOTE 預處理判斷是否為陣列
-  function arrayDebug(params) {
-    return Array.isArray(params) ? params : [];
-  }
   // NOTE 渲染標題
   function renderHead() {
     if (head) {
@@ -93,4 +89,8 @@ export default function CombinedTable({
       </Table>
     </TableContainer>
   );
+}
+// NOTE 預處理判斷是否為陣列
+function arrayDebug(params) {
+  return Array.isArray(params) ? params : [];
 }
