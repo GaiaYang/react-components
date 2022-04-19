@@ -1,7 +1,6 @@
 import React, {
   createContext,
   memo,
-  useCallback,
   useContext,
   useMemo,
   useReducer,
@@ -34,11 +33,13 @@ import {
  * @property {string} [title="通知"] - 通知標題
  * @property {string} [contentText=""] - 通知內容
  * @property {Array<AlertActionsType>} actions - 按鈕
+ * @property {string} key - 唯一鍵值
  */
 /**
  * @typedef AlertDispatchType - alert dispatch資料型別
  * @property {'open' | 'close'} type - 控制開關
  * @property {AlertDataType} data - 通知資料
+ * @property {string} key - 唯一鍵值
  */
 /**
  * @callback AlertReducerCallback - reducer方法回傳
@@ -70,6 +71,7 @@ export function useAlert() {
     alertDataDispatch({
       type: "open",
       data: {
+        key: makeid(8),
         title: title || defaultAlertData.title,
         contentText: contentText || defaultAlertData.contentText,
         actions: actions || defaultAlertData.actions,
@@ -85,6 +87,7 @@ export function useAlert() {
     alertDataDispatch({
       type: "open",
       data: {
+        key: makeid(8),
         title: defaultAlertData.title,
         contentText,
         actions: [
@@ -125,9 +128,8 @@ function alertDataReducer(state, action) {
       // NOTE 將每次alert的東西推進陣列
       return [...state, action.data];
     case "close":
-      // NOTE 移除最後一筆資料，需重新創建物件來刷新state
-      state.pop();
-      return [...state];
+      // NOTE 移除該筆資料
+      return state.filter((i) => i.key !== action.key);
     default:
       // NOTE 未知情況改為預設值
       return alertDataInit;
@@ -151,7 +153,7 @@ function AlertModal({ data = [], reducerDispatch = () => {} }) {
     contentText: defaultAlertData.contentText,
     actions: defaultAlertData.actions,
   });
-  const { title, contentText, actions } = useMemo(
+  const { title, contentText, actions, key } = useMemo(
     /**
      * @returns {AlertDataType}
      */
@@ -161,7 +163,7 @@ function AlertModal({ data = [], reducerDispatch = () => {} }) {
         temporaryRef.current = data[0];
       }
       // NOTE 沒有資料時顯示第一次暫存的資料來過渡畫面
-      if (data[0]) {
+      if (data.length > 0) {
         return data[data.length - 1];
       } else {
         return temporaryRef.current;
@@ -169,9 +171,9 @@ function AlertModal({ data = [], reducerDispatch = () => {} }) {
     },
     [data]
   );
-  const _onClose = useCallback(() => {
-    reducerDispatch({ type: "close" });
-  }, [reducerDispatch]);
+  function _onClose() {
+    reducerDispatch({ type: "close", key });
+  }
   /**
    * @param {AlertActionsType} item
    * @param {number} index
@@ -196,7 +198,7 @@ function AlertModal({ data = [], reducerDispatch = () => {} }) {
     );
   }
   return (
-    <Dialog open={Boolean(data[0])} onClose={_onClose} fullWidth>
+    <Dialog open={data.length > 0} onClose={_onClose} fullWidth>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{contentText}</DialogContentText>
@@ -204,4 +206,15 @@ function AlertModal({ data = [], reducerDispatch = () => {} }) {
       <DialogActions>{actions.map(actionsMap)}</DialogActions>
     </Dialog>
   );
+}
+// NOTE 隨機產生ID
+function makeid(length) {
+  const result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
