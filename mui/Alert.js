@@ -209,7 +209,7 @@ function AlertModal({ data = [], reducerDispatch = () => {} }) {
 }
 // NOTE 隨機產生ID
 function makeid(length) {
-  const result = "";
+  let result = "";
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   const charactersLength = characters.length;
